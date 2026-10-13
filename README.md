@@ -2,6 +2,7 @@
 
 Extension Chrome liệt kê toàn bộ video public của một kênh YouTube, kèm:
 
+- Thumbnail
 - Title
 - Ngày public
 - Lượt xem (View)
@@ -42,8 +43,11 @@ Extension dùng phiên đăng nhập YouTube sẵn có trong trình duyệt, kh�
 
 ### Đọc kết quả
 
+Avatar và tên kênh hiện phía trên bảng, kèm tiến độ quét.
+
 | Cột | Ý nghĩa |
 |---|---|
+| Thumbnail | Ảnh thu nhỏ của video, hiện khi video đã quét xong. |
 | Số track | Số audio track của video. **0** = video chỉ có âm thanh gốc, kênh chưa thêm track lồng tiếng. |
 | Audio tracks | Các ngôn ngữ, xếp A→Z. Ngôn ngữ **in đậm** là track gốc của video. |
 
