@@ -58,12 +58,13 @@ function collectVideos(node, out) {
 // Thứ tự nút lọc ở tab Videos: Mới nhất, Phổ biến, Cũ nhất (chữ trên nút đổi theo ngôn ngữ nên dùng vị trí).
 const SORT_CHIP_INDEX = { latest: 0, popular: 1, oldest: 2 };
 
-// Trả về { channel, ids } — id video public ở tab Videos, theo thứ tự `sort`.
+// Trả về { channel, avatar, ids } — id video public ở tab Videos, theo thứ tự `sort`.
 async function listChannelVideos(input, limit, sort, onProgress, signal) {
   const html = await fetchText(channelVideosUrl(input), signal);
   const data = extractJsonAfter(html, 'var ytInitialData = ') || extractJsonAfter(html, 'window["ytInitialData"] = ');
   if (!data) throw new Error('Không đọc được trang kênh');
   const channel = data.metadata?.channelMetadataRenderer?.title || '';
+  const avatar = data.metadata?.channelMetadataRenderer?.avatar?.thumbnails?.at(-1)?.url || '';
   const tab = data.contents?.twoColumnBrowseResultsRenderer?.tabs
     ?.map(t => t.tabRenderer).find(t => t?.selected);
   const tabUrl = tab?.endpoint?.commandMetadata?.webCommandMetadata?.url || '';
@@ -110,7 +111,7 @@ async function listChannelVideos(input, limit, sort, onProgress, signal) {
     onProgress?.(ids.length);
     if (ids.length === before) break;
   }
-  return { channel, ids: limit ? ids.slice(0, limit) : ids };
+  return { channel, avatar, ids: limit ? ids.slice(0, limit) : ids };
 }
 
 // Title, ngày public, view, audio track của một video.

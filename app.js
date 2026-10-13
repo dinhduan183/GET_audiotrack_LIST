@@ -25,12 +25,18 @@ function buildRow(i) {
   const v = results[i];
   const tr = document.createElement('tr');
   if (scanState[i] !== DONE) {
-    tr.innerHTML = `<td class="num">${i + 1}</td><td class="muted" colspan="5"></td>`;
+    tr.innerHTML = `<td class="num">${i + 1}</td><td class="muted" colspan="6"></td>`;
     tr.lastChild.textContent = `${v.id} — ${scanState[i] === SCANNING ? 'đang quét…' : 'đang chờ…'}`;
     return tr;
   }
   const add = (cls, node) => { const td = document.createElement('td'); if (cls) td.className = cls; td.append(node); tr.append(td); };
   add('num', String(i + 1));
+
+  const img = document.createElement('img');
+  img.src = `https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`;
+  img.loading = 'lazy';
+  img.alt = '';
+  add('thumb', img);
 
   const a = document.createElement('a');
   a.href = `https://www.youtube.com/watch?v=${v.id}`;
@@ -125,6 +131,7 @@ async function run(input, limit, sort) {
   scanState = [];
   page = 0;
   cursor = 0;
+  $('avatar').hidden = $('chName').hidden = true;
   renderPage();
   $('start').disabled = true;
   $('stop').disabled = false;
@@ -134,6 +141,10 @@ async function run(input, limit, sort) {
     setStatus('Đang lấy danh sách video…');
     const list = await listChannelVideos(input, limit, sort, n => setStatus(`Đang lấy danh sách video… ${n}`), signal);
     channelName = list.channel;
+    $('avatar').src = list.avatar;
+    $('avatar').hidden = !list.avatar;
+    $('chName').textContent = channelName;
+    $('chName').hidden = !channelName;
     const ids = list.ids;
     if (!ids.length) { setStatus('Kênh không có video public.'); return; }
 
@@ -142,7 +153,7 @@ async function run(input, limit, sort) {
     renderPage();
 
     let done = 0;
-    setStatus(`${channelName}: đã quét 0/${ids.length} video`);
+    setStatus(`Đã quét 0/${ids.length} video`);
     const worker = async () => {
       while (!signal.aborted) {
         const i = pickNext();
@@ -158,13 +169,13 @@ async function run(input, limit, sort) {
         scanState[i] = DONE;
         updateRow(i);
         done++;
-        setStatus(`${channelName}: đã quét ${done}/${ids.length} video`);
+        setStatus(`Đã quét ${done}/${ids.length} video`);
       }
     };
     await Promise.all(Array.from({ length: CONCURRENCY }, worker));
     setStatus(signal.aborted
-      ? `${channelName}: đã dừng ở ${done}/${ids.length} video`
-      : `${channelName}: xong ${ids.length} video`);
+      ? `Đã dừng ở ${done}/${ids.length} video`
+      : `Xong ${ids.length} video`);
   } catch (e) {
     if (signal.aborted) setStatus('Đã dừng.');
     else setStatus('Lỗi: ' + e.message, true);

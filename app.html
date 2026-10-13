@@ -83,6 +83,13 @@
   th { white-space: nowrap; }
   td.title { min-width: 240px; max-width: 420px; }
 
+  .info { display: flex; align-items: center; gap: 12px; }
+  #avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex: none; }
+  #avatar[hidden], #chName[hidden] { display: none; }
+  #chName { font-size: 16px; font-weight: 650; line-height: 1.3; }
+  td.thumb { width: 1%; }
+  td.thumb img { display: block; width: 120px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; background: var(--chip); }
+
   .tracks { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .chip { display: inline-flex; align-items: center; height: 26px; padding: 0 11px; border-radius: 999px; border: 1px solid var(--chip-line); background: var(--chip); font-size: 12px; white-space: nowrap; }
   .chip.orig { font-weight: 700; }
@@ -127,7 +134,13 @@
   <p class="note">Nếu kênh có chặn IP Việt Nam thì bật VPN lên trước khi Quét.</p>
 
   <div class="bar">
-    <div id="status"></div>
+    <div class="info">
+      <img id="avatar" alt="" hidden>
+      <div>
+        <div id="chName" hidden></div>
+        <div id="status"></div>
+      </div>
+    </div>
     <div id="pager" hidden>
       <button id="prev" type="button">‹ Trước</button>
       <span id="pageInfo"></span>
@@ -137,7 +150,7 @@
 
   <div class="card table-card">
     <table>
-      <thead><tr><th class="num">#</th><th>Title</th><th>Ngày public</th><th class="num">View</th><th class="num">Số track</th><th>Audio tracks</th></tr></thead>
+      <thead><tr><th class="num">#</th><th>Thumbnail</th><th>Title</th><th>Ngày public</th><th class="num">View</th><th class="num">Số track</th><th>Audio tracks</th></tr></thead>
       <tbody id="rows"></tbody>
     </table>
   </div>
