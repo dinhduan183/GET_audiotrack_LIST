@@ -138,13 +138,19 @@ async function run(input, limit, sort) {
   $('csv').disabled = true;
 
   try {
-    setStatus('Đang lấy danh sách video…');
-    const list = await listChannelVideos(input, limit, sort, n => setStatus(`Đang lấy danh sách video… ${n}`), signal);
-    channelName = list.channel;
+    const videoId = videoIdFromInput(input);
+    let list;
+    if (videoId) {
+      list = { channel: '', avatar: '', ids: [videoId] };
+    } else {
+      setStatus('Đang lấy danh sách video…');
+      list = await listChannelVideos(input, limit, sort, n => setStatus(`Đang lấy danh sách video… ${n}`), signal);
+    }
+    channelName = list.channel || videoId || '';
     $('avatar').src = list.avatar;
     $('avatar').hidden = !list.avatar;
-    $('chName').textContent = channelName;
-    $('chName').hidden = !channelName;
+    $('chName').textContent = list.channel;
+    $('chName').hidden = !list.channel;
     const ids = list.ids;
     if (!ids.length) { setStatus('Kênh không có video public.'); return; }
 

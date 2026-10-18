@@ -45,6 +45,22 @@ function channelVideosUrl(input) {
   return `${YT}/${base}/videos`;
 }
 
+// Trả về id video nếu input là link một video (watch, youtu.be, shorts, live, embed), ngược lại null.
+function videoIdFromInput(input) {
+  let s = input.trim();
+  if (!/^https?:\/\//i.test(s)) s = 'https://' + s;
+  let u;
+  try { u = new URL(s); } catch { return null; }
+  const seg = u.pathname.split('/').filter(Boolean);
+  let id = null;
+  if (/(^|\.)youtu\.be$/i.test(u.hostname)) id = seg[0];
+  else if (/(^|\.)youtube\.com$/i.test(u.hostname)) {
+    if (seg[0] === 'watch') id = u.searchParams.get('v');
+    else if (['shorts', 'live', 'embed'].includes(seg[0])) id = seg[1];
+  }
+  return id && /^[\w-]{11}$/.test(id) ? id : null;
+}
+
 function collectVideos(node, out) {
   if (Array.isArray(node)) { for (const n of node) collectVideos(n, out); return; }
   if (!node || typeof node !== 'object') return;

@@ -26,11 +26,13 @@ Extension dùng phiên đăng nhập YouTube sẵn có trong trình duyệt, kh�
 ## Cách dùng
 
 1. Bấm icon extension, một tab mới mở ra.
-2. Dán link kênh vào ô **Link kênh**. Các dạng link đều được:
+2. Dán link kênh vào ô **Link kênh hoặc video**. Các dạng link đều được:
    - `https://www.youtube.com/@TenKenh`
    - `https://www.youtube.com/channel/UCxxxxxxxx`
    - `https://www.youtube.com/c/TenKenh`, `https://www.youtube.com/user/TenKenh`
    - hoặc chỉ `@TenKenh`
+
+   Muốn quét **một video** thì dán link video (`https://www.youtube.com/watch?v=...`, `https://youtu.be/...`, `https://www.youtube.com/shorts/...`). Khi đó ô **Số video** và **Sắp xếp** không có tác dụng.
 3. Ô **Số video**: để trống để lấy tất cả video, hoặc nhập N để chỉ lấy N video đầu tiên theo thứ tự sắp xếp.
 4. Ô **Sắp xếp**: **Mới nhất**, **Phổ biến** (nhiều view nhất) hoặc **Cũ nhất**, giống bộ lọc ở tab Videos của kênh.
 5. Bấm **Bắt đầu**. Bấm **Dừng** nếu muốn dừng giữa chừng.
