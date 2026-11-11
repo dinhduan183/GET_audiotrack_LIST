@@ -146,7 +146,7 @@ async function getVideoInfo(id, signal) {
       const t = f.audioTrack;
       // Track gốc có id dạng "<ngôn ngữ>.4" (track lồng tiếng là ".3"). audioIsDefault thì
       // phụ thuộc cài đặt ngôn ngữ của người xem nên không dùng.
-      if (t && !map.has(t.id)) map.set(t.id, { name: t.displayName, isOriginal: /\.4$/.test(t.id) || /original/i.test(t.displayName) });
+      if (t && !map.has(t.id)) map.set(t.id, { name: t.displayName, code: t.id.split('.')[0], isOriginal: /\.4$/.test(t.id) || /original/i.test(t.displayName) });
     }
     // Xếp A→Z theo tên, giống menu Audio track của YouTube.
     tracks = [...map.values()].sort((a, b) => a.name.localeCompare(b.name));

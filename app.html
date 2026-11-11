@@ -48,15 +48,20 @@
 
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
 
-  form { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; padding: 16px; margin-bottom: 10px; }
-  .note { margin: 0 0 16px; color: var(--muted); font-size: 13px; }
-  .field { display: flex; flex-direction: column; gap: 4px; }
-  .field.grow { flex: 1 1 360px; }
-  .field label { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .panel { margin-bottom: 16px; }
+  .prow { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+  .prow + .prow { border-top: 1px solid var(--line); }
+  .prow[hidden] { display: none; }
+  .prow.top { align-items: flex-start; }
+  .prow.top .plabel { padding-top: 7px; }
+  .plabel { flex: none; width: 72px; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+  .pbody { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  #form { display: flex; flex-wrap: wrap; gap: 8px; flex: 1; min-width: 0; margin: 0; }
+  #url { flex: 1 1 320px; min-width: 0; }
+  .note { margin: -8px 0 16px; padding-left: 2px; color: var(--muted); font-size: 12px; }
   input, select { height: 38px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--text); font: inherit; outline: none; }
   input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-  #limit { width: 110px; }
-  .actions { display: flex; gap: 8px; }
+  #limit { width: 120px; }
   button { height: 38px; padding: 0 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--text); font: inherit; font-weight: 500; cursor: pointer; }
   button:hover:not(:disabled) { background: var(--hover); }
   button:disabled { opacity: .45; cursor: default; }
@@ -93,6 +98,46 @@
   .tracks { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .chip { display: inline-flex; align-items: center; height: 26px; padding: 0 11px; border-radius: 999px; border: 1px solid var(--chip-line); background: var(--chip); font-size: 12px; white-space: nowrap; }
   .chip.orig { font-weight: 700; }
+  .saved-item { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 4px 0 4px; max-width: 280px; border-radius: 999px; font-size: 13px; text-align: left; }
+  .saved-item:not(:has(img)) { padding-left: 12px; }
+  .saved-item img { flex: none; object-fit: cover; background: var(--chip); }
+  .saved-item.channel img { width: 24px; height: 24px; border-radius: 50%; }
+  .saved-item.video img { width: 40px; height: 24px; border-radius: 999px; }
+  .saved-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .saved-item .saved-del { flex: none; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; color: var(--muted); font-size: 15px; line-height: 1; }
+  .saved-item .saved-del:hover { background: var(--accent-soft); color: var(--accent); }
+  .chip.missing { background: #fee2e2; border-color: #dc2626; color: #991b1b; animation: blink 1s ease-in-out infinite; }
+  @keyframes blink { 50% { opacity: .3; } }
+  tr.warn td { background: #fff7e6; }
+  #warnCount { color: #b45309; font-weight: 500; }
+  .ptab { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 999px; font-size: 13px; }
+  .ptab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .ptab.active:hover:not(:disabled) { background: var(--accent); filter: brightness(1.08); }
+  .ptab-count { min-width: 20px; height: 18px; padding: 0 6px; border-radius: 999px; background: var(--chip); color: var(--muted); font-size: 11px; display: grid; place-items: center; }
+  .ptab.active .ptab-count { background: rgba(255,255,255,.25); color: #fff; }
+  .ptab-add { border-style: dashed; color: var(--muted); }
+  .ptab-input { height: 32px; width: 220px; border-radius: 999px; font-size: 13px; }
+  .tabs-hint { color: var(--muted); font-size: 12px; }
+  #presetEditor { flex-wrap: nowrap; align-items: flex-start; gap: 12px; }
+  .tagbox { flex: 1; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-height: 38px; padding: 4px 6px; border: 1px solid var(--line); border-radius: 8px; cursor: text; }
+  .tagbox:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .tagbox .chip { padding-right: 4px; }
+  .tag-input { flex: 1 0 220px; height: 28px; padding: 0 4px; border: none; background: transparent; }
+  .tag-input:focus { box-shadow: none; }
+  .chip-del { margin-left: 4px; width: 18px; height: 18px; padding: 0; border: none; border-radius: 50%; background: transparent; color: var(--muted); font-size: 14px; line-height: 1; display: grid; place-items: center; }
+  .chip-del:hover:not(:disabled) { background: var(--accent-soft); color: var(--accent); }
+  .preset-actions { flex: none; display: flex; gap: 4px; padding-top: 4px; }
+  .link-btn { height: 30px; padding: 0 10px; border-color: transparent; background: transparent; color: var(--muted); font-size: 12px; }
+  .link-btn.danger:hover:not(:disabled) { color: var(--err); }
+  td.action { width: 1%; white-space: nowrap; }
+  .save-preset { height: 32px; padding: 0 14px; font-size: 12px; font-weight: 600; border-color: #16a34a; background: #dcfce7; color: #166534; box-shadow: var(--shadow); }
+  .save-preset:hover:not(:disabled) { background: #16a34a; color: #fff; }
+  .save-preset:active { transform: translateY(1px); }
+  @media (prefers-color-scheme: dark) {
+    tr.warn td { background: #2a2214; }
+    #warnCount { color: #fbbf24; }
+    .chip.missing { background: #7f1d1d; border-color: #ef4444; color: #fecaca; }
+  }
   .muted { color: var(--muted); }
   .err { color: var(--err); }
 </style>
@@ -107,31 +152,37 @@
     </div>
   </header>
 
-  <form id="form" class="card">
-    <div class="field grow">
-      <label for="url">Link kênh hoặc video</label>
-      <input id="url" placeholder="https://www.youtube.com/@MrBeast" required>
+  <section class="card panel">
+    <div class="prow">
+      <div class="plabel">Quét</div>
+      <form id="form">
+        <input id="url" placeholder="Dán link kênh hoặc video YouTube" required>
+        <input id="limit" type="number" min="1" placeholder="Tất cả video" title="Số video cần quét. Để trống để lấy tất cả">
+        <select id="sort" title="Thứ tự lấy video">
+          <option value="latest">Mới nhất</option>
+          <option value="popular">Phổ biến</option>
+          <option value="oldest">Cũ nhất</option>
+        </select>
+        <button id="start" class="primary" type="submit">Bắt đầu</button>
+        <button id="stop" type="button" disabled>Dừng</button>
+      </form>
     </div>
-    <div class="field">
-      <label for="limit">Số video</label>
-      <input id="limit" type="number" min="1" placeholder="Tất cả">
+    <div id="saved" class="prow" hidden>
+      <div class="plabel">Đã lưu</div>
+      <div id="savedList" class="pbody"></div>
     </div>
-    <div class="field">
-      <label for="sort">Sắp xếp</label>
-      <select id="sort">
-        <option value="latest">Mới nhất</option>
-        <option value="popular">Phổ biến</option>
-        <option value="oldest">Cũ nhất</option>
-      </select>
+    <div class="prow">
+      <div class="plabel">Preset</div>
+      <div id="presetTabs" class="pbody"></div>
     </div>
-    <div class="actions">
-      <button id="start" class="primary" type="submit">Bắt đầu</button>
-      <button id="stop" type="button" disabled>Dừng</button>
-      <button id="csv" type="button" disabled>Xuất CSV</button>
+    <div id="langRow" class="prow top" hidden>
+      <div class="plabel">Cần có</div>
+      <div id="presetEditor" class="pbody"></div>
     </div>
-  </form>
+  </section>
+  <p class="note">Kênh chặn IP Việt Nam thì bật VPN trước khi quét.</p>
 
-  <p class="note">Nếu kênh có chặn IP Việt Nam thì bật VPN lên trước khi Quét.</p>
+  <datalist id="langOptions"></datalist>
 
   <div class="bar">
     <div class="info">
@@ -139,6 +190,7 @@
       <div>
         <div id="chName" hidden></div>
         <div id="status"></div>
+        <div id="warnCount"></div>
       </div>
     </div>
     <div id="pager" hidden>
@@ -150,12 +202,13 @@
 
   <div class="card table-card">
     <table>
-      <thead><tr><th class="num">#</th><th>Thumbnail</th><th>Title</th><th>Ngày public</th><th class="num">View</th><th class="num">Số track</th><th>Audio tracks</th></tr></thead>
+      <thead><tr><th class="num">#</th><th>Thumbnail</th><th>Title</th><th>Ngày public</th><th class="num">View</th><th class="num">Số track</th><th>Audio tracks</th><th></th></tr></thead>
       <tbody id="rows"></tbody>
     </table>
   </div>
 </div>
 <script src="yt.js"></script>
+<script src="languages.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
